@@ -34,9 +34,7 @@ var panelParams = null
 // ------------------------------------------------------
 !(async () => {
     if (!username || !password) {
-        $.msg('国上电网', '请先配置国上电网账号密码!', '点击前往BoxJs配置', {
-            'open-url': ''
-        })
+        $.msg('网上国网', '请先配置网上国网账号密码!', '点击前往BoxJs配置', {'open-url': ''})
         return
     }
     await getCode()
