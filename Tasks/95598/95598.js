@@ -4,8 +4,8 @@
  * @feedback https://t.me/yqc_777/
  * @author 𝒀𝒖𝒉𝒆𝒏𝒈
  * @update 20231017
- * @version 1.0.0
-******************************************/
+ * @version 1.0.1
+ ******************************************/
 const $ = new Env('网上国网') // 建议一天查询一次即可, 无需频繁查询
 const baseURL = 'https://www.95598.cn'
 const domain = 'http://172.233.81.206:7788' // 感谢tg群友@woxihuanniya提供的服务器
@@ -19,22 +19,21 @@ var bindInfo = $.getdata('95598_bindInfo') ? JSON.parse($.getdata('95598_bindInf
 // 配置参数
 var username = $.getdata('95598_username') || ''
 var password = $.getdata('95598_password') || ''
-var recentElcFee = $.getdata('95598_recent_elc_fee') || false // 是否查看近7天用电量
+var recentElcFee = $.getdata('95598_recent_elc_fee') // 是否查看近7天用电量
 // ------------------------------------------------------
 // 通知信息
 var subTitle = ''
 var Message = ''
 // ------------------------------------------------------
 // 面板专用
-var surgePanelConfig = JSON.parse(
-    $.getdata('95598_surge_panel_config').replace(/\'/g, '"') || `{'title':'','content':'','icon':'','icon-color':''}`.replace(/\'/g, '"')
-) // Surge面板配置 -- 感谢@小白脸和@MuTu888两位佬的帮助
+var surgePanelConfig = $.getdata('95598_surge_panel_config') || `{'title':'','content':'','icon':'','icon-color':''}` // Surge面板配置 -- 感谢@小白脸和@MuTu888两位佬的帮助
+surgePanelConfig = surgePanelConfig ? JSON.parse(surgePanelConfig.replace(/\'/g, '"')) : null
 // console.log(`✔️ 配置参数: ${JSON.stringify(surgePanelConfig)} !`)
 var panelParams = null
 // ------------------------------------------------------
 !(async () => {
     if (!username || !password) {
-        $.msg('网上国网', '请先配置网上国网账号密码!', '点击前往BoxJs配置', {'open-url': ''})
+        $.msg('网上国网', '请先配置网上国网账号密码!', '点击前往BoxJs配置', { 'open-url': '' })
         return
     }
     await getCode()
@@ -57,7 +56,7 @@ var panelParams = null
     }
     await getElcFee()
     // 近7天用电量
-    if (recentElcFee) await getRecentElcFee()
+    if (recentElcFee.toString() === 'true') await getRecentElcFee()
     // 每月1号查询上个月用电量
     var day = $.time('dd', new Date().getTime())
     if (day === '01') await getLastMonthElcFee()
@@ -66,28 +65,31 @@ var panelParams = null
 })()
     .catch((e) => $.log('', `❌ ${e}!`, ''))
     .finally(() => {
-        var { totalPq, sumMoney, prepayBal, dayNum, date } = panelParams
-        var opts = {
-            // 进阶知识:
-            // content: 账户余额还有{sumMoney}元 ❗注意: 使用{}作为模板引擎的匹配符
-            // 可用字段
-            // totalPq, // 本月用电量
-            // sumMoney, // 账户余额
-            // prepayBal, // 预存电费
-            // dayNum // 预计可用天数
-            // date // 截至日期
-            title: surgePanelConfig?.title || '网上国网',
-            content: surgePanelConfig?.content
-                ? surgePanelConfig['content'].replace(
-                      /{([^}]+)}/g,
-                      (match, key) => ({ totalPq, sumMoney, prepayBal, dayNum, date }[key])
-                  )
-                : subTitle,
-            icon: surgePanelConfig?.icon || 'command.circle.fill',
-            'icon-color':
-                surgePanelConfig && surgePanelConfig.hasOwnProperty('icon-color')
-                    ? surgePanelConfig['icon-color']
-                    : '#FFD700'
+        var opts = {}
+        if (panelParams) {
+            var { totalPq, sumMoney, prepayBal, dayNum, date } = panelParams
+            opts = {
+                // 进阶知识:
+                // content: 账户余额还有{sumMoney}元 ❗注意: 使用{}作为模板引擎的匹配符
+                // 可用字段
+                // totalPq, // 本月用电量
+                // sumMoney, // 账户余额
+                // prepayBal, // 预存电费
+                // dayNum // 预计可用天数
+                // date // 截至日期
+                title: surgePanelConfig?.title || '网上国网',
+                content: surgePanelConfig?.content
+                    ? surgePanelConfig['content'].replace(
+                          /{([^}]+)}/g,
+                          (match, key) => ({ totalPq, sumMoney, prepayBal, dayNum, date }[key])
+                      )
+                    : subTitle,
+                icon: surgePanelConfig?.icon || 'command.circle.fill',
+                'icon-color':
+                    surgePanelConfig && surgePanelConfig.hasOwnProperty('icon-color')
+                        ? surgePanelConfig['icon-color']
+                        : '#FFD700'
+            }
         }
         // console.log(`✔️ 面板信息: ${JSON.stringify(opts, null, 2)} !`)
         $.done(opts)
@@ -209,6 +211,8 @@ async function doLogin(key, verifyCode) {
         }
         var result = await getDecryptData(opts2)
         var { bizrt } = result
+        // 20231017 -> 显示默认户主
+        bizrt.userInfo[0].powerUserList = bizrt.userInfo[0].powerUserList.filter((item) => item.isDefault == '1')
         $.setdata(JSON.stringify(bizrt), '95598_bizrt')
         requestBizrt = bizrt
         var { token, userInfo } = bizrt
@@ -366,6 +370,8 @@ async function getBindInfo() {
             data: encRes
         }
         var { bizrt } = await getDecryptData(opts2)
+        // 显示默认户主
+        bizrt.powerUserList = bizrt.powerUserList.filter((item) => item.isDefault === '1')
         console.log(`✔️ 查询绑定信息成功: ${JSON.stringify(bizrt)} !`)
         $.setdata(JSON.stringify(bizrt), '95598_bindInfo')
         bindInfo = bizrt
@@ -424,7 +430,7 @@ async function getElcFee() {
         var { list } = result
         var {
             date, // 截至日期
-            totalPq, // 本月用电量
+            totalPq, // 上月总用电量
             sumMoney, // 账户余额
             prepayBal, // 预存电费
             dayNum // 预计可用天数
@@ -440,17 +446,50 @@ async function getElcFee() {
             consName_dst, // 脱敏主户名
             consNo_dst // 用电户号
         } = bindInfo.powerUserList[0]
-        subTitle = `${totalPq && `本月用电: ${totalPq}`}` + `${sumMoney && `\t账户余额: ${sumMoney}`}`
-        Message =
-            `${date && `截至日期: ${date}`}` +
-            `${prepayBal && `\n预存电费: ${prepayBal}`}` +
-            `${dayNum && `\n预计可用天数: ${dayNum}`}` +
-            `${nickname && `\n用户名: ${nickname}`}` +
-            `${mobile_dst && `\n手机号: ${mobile_dst}`}` +
-            `${orgName && `\n供电单位: ${orgName}`}` +
-            `${elecAddr_dst && `\n具体地址: ${elecAddr_dst}`}` +
-            `${consName_dst && `\n主户名: ${consName_dst}`}` +
-            `${consNo_dst && `\n用电户号: ${consNo_dst}`}`
+        // subTitle = `${totalPq && `本月用电: ${totalPq}`}` + `${sumMoney && `\t账户余额: ${sumMoney}`}`
+        // Message =
+        //     `${date && `截至日期: ${date}`}` +
+        //     `${prepayBal && `\n预存电费: ${prepayBal}`}` +
+        //     `${dayNum && `\n预计可用天数: ${dayNum}`}` +
+        //     `${nickname && `\n用户名: ${nickname}`}` +
+        //     `${mobile_dst && `\n手机号: ${mobile_dst}`}` +
+        //     `${orgName && `\n供电单位: ${orgName}`}` +
+        //     `${elecAddr_dst && `\n具体地址: ${elecAddr_dst}`}` +
+        //     `${consName_dst && `\n主户名: ${consName_dst}`}` +
+        //     `${consNo_dst && `\n用电户号: ${consNo_dst}`}`
+        if (totalPq) {
+            subTitle += `上月用电: ${totalPq}`
+        }
+        if (sumMoney) {
+            subTitle += `\t账户余额: ${sumMoney}`
+        }
+        if (date) {
+            Message += `截至日期: ${date}`
+        }
+        if (prepayBal) {
+            Message += `\n预存电费: ${prepayBal}`
+        }
+        if (dayNum) {
+            Message += `\n预计可用天数: ${dayNum}`
+        }
+        if (nickname) {
+            Message += `\n用户名: ${nickname}`
+        }
+        if (mobile_dst) {
+            Message += `\n手机号: ${mobile_dst}`
+        }
+        if (orgName) {
+            Message += `\n供电单位: ${orgName}`
+        }
+        if (elecAddr_dst) {
+            Message += `\n具体地址: ${elecAddr_dst}`
+        }
+        if (consName_dst) {
+            Message += `\n主户名: ${consName_dst}`
+        }
+        if (consNo_dst) {
+            Message += `\n用电户号: ${consNo_dst}`
+        }
     } catch (e) {
         throw e
     }
@@ -618,7 +657,9 @@ async function getLastMonthElcFee() {
             totalAmt, // 花费金额
             totalPq // 用电量
         } = result
-        Message += `${totalAmt && `\n上个月花费金额: ${totalAmt}`}` + `\t${totalPq && `上个月用电量: ${totalPq}`}`
+        // Message += `${totalAmt && `\n上个月花费金额: ${totalAmt}`}` + `\t${totalPq && `上个月用电量: ${totalPq}`}`
+        if(totalAmt) Message += `\n上个月花费金额: ${totalAmt}`
+        if(totalPq) Message += `\t上个月用电量: ${totalPq}`
     } catch (e) {
         throw e
     }
