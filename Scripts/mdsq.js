@@ -11,9 +11,9 @@
  * @version 1.0.1
 ******************************************
 
-http[s]?://.*(uzro0z3|bytebwq|qrneryt|dirptev|saejeuj).com/api/app/(ping/config|media/(play|homev2|short/recommend)|user/info) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/mdsq.js
+http[s]?://.*(d4s000ejiic|uzro0z3|bytebwq|qrneryt|dirptev|saejeuj).com/api/app/(ping/config|media/(play|homev2|short/recommend)|user/info) url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/mdsq.js
 
-hostname=*bytebwq.com,*qrneryt.com,*dirptev.com,*saejeuj.com,*uzro0z3.com
+hostname=*bytebwq.com,*qrneryt.com,*dirptev.com,*saejeuj.com,*uzro0z3.com,*d4s000ejiic.com
 
 ******************************************/
 for (var lookup = [], revLookup = [], Arr = "undefined" != typeof Uint8Array ? Uint8Array : Array, code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", i = 0, len = code.length; i < len; ++i)lookup[i] = code[i], revLookup[code.charCodeAt(i)] = i;
