@@ -384,6 +384,9 @@ async function getBindInfo() {
         var { bizrt } = await getDecryptData(opts2)
         // 显示默认户主
         bizrt.powerUserList = bizrt.powerUserList.filter((item) => item.isDefault === '1')
+        if (bizrt.powerUserList.length > 1) {
+            bizrt.powerUserList = bizrt.powerUserList.filter((item) => item.elecTypeCode === '01')
+        }
         console.log(`✔️ 查询绑定信息成功: ${JSON.stringify(bizrt)} !`)
         $.setdata(JSON.stringify(bizrt), '95598_bindInfo')
         bindInfo = bizrt
@@ -717,7 +720,7 @@ function getDecryptData(params) {
                     reject(err)
                 } else {
                     var resp = JSON.parse(data).data
-                    console.log(resp, '--------------------')
+                    console.log(`------${JSON.stringify(resp, null, 2)}------`)
                     var { code, message, data } = resp
                     if (code.toString() === '1') {
                         resolve(data)
