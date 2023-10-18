@@ -34,9 +34,9 @@ cron "5 21 * * *" script-path=https://raw.githubusercontent.com/Yuheng0101/X/mai
 
 > 应@小白脸要求添加Surge Panel面板支持
 
-    1.修改字段Surge Panel配置的值: {'title':'','content':'截至到{date},账户余额还有{sumMoney},本月用电{totalPq}','icon':'#ff0000','icon-color':'bolt.circle.fill'}
+    1.修改字段Surge Panel配置的值: {'title':'','content':'截至到{date},账户余额还有{sumMoney},上月用电{totalPq}','icon':'bolt.circle.fill','icon-color':'#ff0000'}
 
-    2.面板可用字段 totalPq -> 本月用电量 | sumMoney -> 账户余额 | prepayBal -> 预存电费 | dayNum -> 预计可用天数 | date -> 截止日期
+    2.面板可用字段 totalPq -> 上月用电量 | sumMoney -> 账户余额 | prepayBal -> 预存电费 | dayNum -> 预计可用天数 | date -> 截止日期
 
 ## 感谢
 
