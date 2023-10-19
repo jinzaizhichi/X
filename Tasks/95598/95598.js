@@ -3,8 +3,8 @@
  * @channel https://t.me/yqc_123/
  * @feedback https://t.me/yqc_777/
  * @author 𝒀𝒖𝒉𝒆𝒏𝒈
- * @update 20231017
- * @version 1.0.1
+ * @update 20231019
+ * @version 1.0.2
  ******************************************/
 const $ = new Env('网上国网') // 建议一天查询一次即可, 无需频繁查询
 const baseURL = 'https://www.95598.cn'
@@ -33,7 +33,9 @@ var panelParams = null
 // ------------------------------------------------------
 !(async () => {
     if (!username || !password) {
-        $.msg('网上国网', '请先配置网上国网账号密码!', '点击前往BoxJs配置', { 'open-url': '' })
+        $.msg('网上国网', '请先配置网上国网账号密码!', '点击前往BoxJs配置', {
+            'open-url': 'http://boxjs.com/#/sub/add/https%3A%2F%2Fraw.githubusercontent.com%2FYuheng0101%2FX%2Fmain%2FTasks%2Fboxjs.json'
+        })
         return
     }
     await getCode()
@@ -72,7 +74,7 @@ var panelParams = null
                 // 进阶知识:
                 // content: 账户余额还有{sumMoney}元 ❗注意: 使用{}作为模板引擎的匹配符
                 // 可用字段
-                // totalPq, // 本月用电量
+                // totalPq, // 上月用电量
                 // sumMoney, // 账户余额
                 // prepayBal, // 预存电费
                 // dayNum // 预计可用天数
