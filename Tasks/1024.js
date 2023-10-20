@@ -81,12 +81,16 @@ function getPosts() {
                 .match(/<tbodystyle=\"table-layout:fixed;\"id=\"tbody\">(.*?)<\/tbody>/)[1]
                 .match(/<trclass=\"tr3t_onetac"\>(.*?)<\/tr>/g)
                 .map((item) => {
-                    let [, href, title, date] = item.match(
-                        /<h3><ahref=\"(.*?)\".*?>(.*?)<\/a><\/h3>.*?data-timestamp=\"(.*?)\"/
-                    )
-                    title = title.replace(/<.*?>/g, '')
-                    date = Number(date.slice(-1)) ? date : date.slice(0, -1)
-                    return { href: baseURL + href, title, date: date * 1e3 }
+                    try {
+                        let [, href, title, date] = item.match(
+                            /<h3><ahref=\"(.*?)\".*?>(.*?)<\/a><\/h3>.*?data-timestamp=\"(.*?)\"/
+                        )
+                        title = title.replace(/<.*?>/g, '')
+                        date = Number(date.slice(-1)) ? date : date.slice(0, -1)
+                        return { href: baseURL + href, title, date: date * 1e3 }
+                    } catch (e) {
+                        return {}
+                    }
                 })
                 .filter((item) => !/[\d+P]/.test(item.title))
             resolve(posts)
