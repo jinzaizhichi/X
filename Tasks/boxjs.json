@@ -114,6 +114,32 @@
                 "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/83/d8/8a/83d88a92-5a4d-7a2f-118c-80d795e7a9f6/AppIcon-0-0-1x_U007emarketing-0-5-0-0-sRGB-85-220.png/144x144.png"
             ],
             "script": "https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/95598/95598.js"
+        },
+        {
+            "id": "yuheng.1024",
+            "name": "某榴最新技術推送",
+            "descs_html": [
+                "<a target='_blank' href='https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/1024.js'>跳转脚本</a>"
+            ],
+            "keys": [
+                "1024_israndom"
+            ],
+            "settings": [
+                {
+                    "id": "1024_israndom",
+                    "name": "是否随机推贴",
+                    "val": false,
+                    "type": "boolean",
+                    "desc": ""
+                }
+            ],
+            "author": "@yuheng",
+            "repo": "https://github.com/Yuheng0101/X",
+            "icons": [
+                "https://raw.githubusercontent.com/Yuheng0101/X/main/Assets/1024.png",
+                "https://raw.githubusercontent.com/Yuheng0101/X/main/Assets/1024.png"
+            ],
+            "script": "https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/1024.js"
         }
     ]
 }
