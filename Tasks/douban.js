@@ -81,7 +81,7 @@ async function getMovie() {
 async function toNotify(movieInfo) {
     const { title, year, directors, actors, poster, pubdate, card_subtitle, rating, url } = movieInfo
     const subTitle = `《${title}(${year})》\t${card_subtitle}`
-    var msg = `导演: ${directors}\n主演: ${actors}\n上映: ${pubdate}\n评分: ${rating}\n`
+    var msg = `导演: ${directors}\n主演: ${actors}\n上映: ${pubdate}\n评分: ${rating}`
     if ($.isQuanX() || $.isLoon()) {
         $.msg(scriptName, subTitle, msg, {
             'open-url': url || 'https://movie.douban.com/top250',
@@ -91,7 +91,7 @@ async function toNotify(movieInfo) {
         var jumpUrl = url || 'https://movie.douban.com/top250'
         $.msg(scriptName, subTitle, msg, jumpUrl)
     } else {
-        if (url) msg += `🔗链接：${url}`
+        if (url) msg += `\n🔗链接：${url}`
         $.msg(scriptName, subTitle, msg)
     }
 }
