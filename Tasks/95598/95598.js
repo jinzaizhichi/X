@@ -489,15 +489,15 @@ async function getElcFee() {
         if (dayNum) {
             Message += `\n预计可用天数: ${dayNum}`
         }
-        if (nickname) {
-            Message += `\n用户名: ${nickname}`
-        }
+        // if (nickname) {
+        //     Message += `\n用户名: ${nickname}`
+        // }
         if (mobile_dst) {
             Message += `\n手机号: ${mobile_dst}`
         }
-        if (orgName) {
-            Message += `\n供电单位: ${orgName}`
-        }
+        // if (orgName) {
+        //     Message += `\n供电单位: ${orgName}`
+        // }
         if (elecAddr_dst) {
             Message += `\n具体地址: ${elecAddr_dst}`
         }
