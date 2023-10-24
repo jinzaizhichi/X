@@ -31,7 +31,7 @@ cron "30 9 * * *" script-path=https://raw.githubusercontent.com/Yuheng0101/X/mai
 ```
 ### 配置 (Surge)
 ```properties
-豆瓣每日推荐 = type=cron,cronexp=0 0 8,14,20,wake-system=1,script-path=https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/douban.js,timeout=60
+豆瓣每日推荐 = type=cron,cronexp=0 30 9 * * *,wake-system=1,script-path=https://raw.githubusercontent.com/Yuheng0101/X/main/Tasks/douban.js,timeout=60
 ```
 ******************************************/
 const scriptName = '豆瓣每日推荐'
