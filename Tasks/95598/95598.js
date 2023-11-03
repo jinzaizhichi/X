@@ -522,12 +522,14 @@ async function getRecentElcFee(index) {
         }
     }
     try {
-        const { sevenEleList, totalPq } = await Request(params)
+        let { sevenEleList, totalPq } = await Request(params)
         console.log(`✔️ 获取近期用电量成功: ${JSON.stringify(sevenEleList)} !`)
         if (sevenEleList.length > 0 && totalPq > 0) {
+            sevenEleList = sevenEleList.filter((item) => item?.thisVPq)
+            if (sevenEleList.length > 6) sevenEleList = sevenEleList.slice(0, 6)
             Message += `\n\n近期用电: ${totalPq}度 ⚡️`
             sevenEleList.map((item, index) => {
-                if (item?.thisVPq) Message += `\n${item.day}: ${item.dayElePq}度 ⚡️`
+                Message += `\n${item.day}: ${item.dayElePq}度 ⚡️`
             })
         }
     } catch (e) {
