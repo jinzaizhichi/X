@@ -180,6 +180,13 @@
           "desc": ""
         },
         {
+          "id": "95598_notify_type",
+          "name": "通知方式 0/默认 1/全通知",
+          "val": "1",
+          "type": "text",
+          "desc": "指定单/多户通知"
+        },
+        {
           "id": "95598_surge_panel_config",
           "name": "Surge Panel配置",
           "val": "{'title':'','content':'','icon':'','icon-color':''}",
