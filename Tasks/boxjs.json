@@ -174,7 +174,7 @@
         },
         {
           "id": "95598_recent_elc_fee",
-          "name": "是否查看近7天用电量",
+          "name": "是否查看近期用电量",
           "val": false,
           "type": "boolean",
           "desc": ""
