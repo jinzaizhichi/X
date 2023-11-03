@@ -154,7 +154,7 @@ async function GetCookie() {
                             value: `${ckItems.join('')}`
                         })
                         if (isUpdated) {
-                            Message += `青龙/插入更新成功 🎉\n`
+                            $.notify(`用户名: ${value.name}`, ``, `同步青龙成功 🎉`)
                         }
                     } catch (e) {
                         console.log(e)
